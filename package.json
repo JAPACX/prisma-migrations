@@ -20,7 +20,9 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@prisma/client": "5.5.2"
+    "@prisma/client": "5.5.2",
+    "read-excel-file": "^5.7.1",
+    "uuid": "^9.0.1"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
