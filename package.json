@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "merge": "prisma db push --preview-feature",
     "generate": "prisma generate",
-    "migrate": "prisma migrate dev"
+    "migrate": "prisma migrate dev",
+    "pull": "prisma db pull"
   },
   "keywords": [],
   "author": "",

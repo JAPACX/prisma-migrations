@@ -4,10 +4,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  schemas  = ["example", "public"]
-  extensions = [uuidOssp(map: "uuid-ossp")]
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [ uuid_ossp(map: "uuid-ossp")]
+  schemas    = ["public", "supplies"]
 }
 
 model topic {
@@ -31,4 +31,65 @@ model videos {
   topic       topic    @relation(fields: [topic_id_fk], references: [id])
 
   @@schema("public")
+}
+
+model category_of_supply {
+  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name           String           @unique @db.VarChar(255)
+  updated_at     DateTime         @default(now())
+  created_at     DateTime         @default(now())
+  type_of_supply type_of_supply[]
+
+  @@schema("supplies")
+}
+
+model supplies_department {
+  id           String                  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name         String                  @unique @db.VarChar(255)
+  updated_at   DateTime                @default(now())
+  created_at   DateTime                @default(now())
+  municipality supplies_municipality[]
+
+  @@map("department")
+  @@schema("supplies")
+}
+
+model supplies_municipality {
+  id               String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  department_id_fk String              @db.Uuid
+  name             String              @unique @db.VarChar(255)
+  updated_at       DateTime            @default(now())
+  created_at       DateTime            @default(now())
+  department       supplies_department @relation(fields: [department_id_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  supply           supply[]
+
+  @@map("municipality")
+  @@schema("supplies")
+}
+
+model supply {
+  id                   String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  type_of_supply_id_fk String                @db.Uuid
+  municipality_id_fk   String                @db.Uuid
+  name                 String                @db.VarChar(255)
+  unity_of_measure     String                @db.VarChar(255)
+  last_price           String                @db.VarChar
+  updated_at           DateTime              @default(now())
+  created_at           DateTime              @default(now())
+  municipality         supplies_municipality @relation(fields: [municipality_id_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  type_of_supply       type_of_supply        @relation(fields: [type_of_supply_id_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("supplies")
+}
+
+model type_of_supply {
+  id                       String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  category_of_supply_id_fk String             @db.Uuid
+  name                     String             @unique @db.VarChar(255)
+  updated_at               DateTime           @default(now())
+  created_at               DateTime           @default(now())
+  supply                   supply[]
+  category_of_supply       category_of_supply @relation(fields: [category_of_supply_id_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("supplies")
 }
