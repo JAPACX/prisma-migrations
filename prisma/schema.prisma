@@ -3,19 +3,24 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
+  schemas  = ["public", "example"]
 
+}
 
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
   posts Post[]
+
+  @@schema("public")
+
 }
 
 model Post {
@@ -25,6 +30,8 @@ model Post {
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+
+  @@schema("public")
 }
 
 

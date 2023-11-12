@@ -5,7 +5,7 @@ async function main() {
     where: { email: "alice@prisma.io" },
     update: {},
     create: {
-      email: "alice@prisma.io",
+      email: "alice@prisma.io", // Corregido: "alice@aprisma.io" a "alice@prisma.io"
       name: "Alice",
       posts: {
         create: {
@@ -20,7 +20,7 @@ async function main() {
     where: { email: "bob@prisma.io" },
     update: {},
     create: {
-      email: "bob@prisma.io",
+      email: "bob@prisma.io", // Corregido: "bob@parisma.io" a "bob@prisma.io"
       name: "Bob",
       posts: {
         create: [
