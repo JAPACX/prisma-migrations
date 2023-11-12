@@ -1,35 +1,13 @@
-import { PrismaClient } from "@prisma/client";
-import seedVideos from "./seed/videos";
+import prisma from "../db/client";
+import VideosSeed from "./seed/VideosSeed";
 
-const prisma = new PrismaClient();
-
-async function main() {
-  console.log(seedVideos.length);
-
-  for (let index = 0; index < seedVideos.length; index++) {
-    await prisma.topic.create({
-      data: {
-        name: seedVideos[index].name,
-        videos: {
-          create: seedVideos[index].videos.map((element) => {
-            return {
-              description: element.description,
-              time: element.time,
-              url: element.url,
-            };
-          }),
-        },
-      },
-    });
-  }
-}
-
-main()
-  .then(async () => {
+Promise.all([VideosSeed()])
+  .then(async (data) => {
+    console.log(data);
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error(e);
+  .catch(async (err) => {
+    console.error(err);
     await prisma.$disconnect();
     process.exit(1);
   });
