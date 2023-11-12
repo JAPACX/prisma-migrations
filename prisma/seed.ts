@@ -1,18 +1,23 @@
 import { PrismaClient } from "@prisma/client";
+import { videos } from "./seed/videos";
 const prisma = new PrismaClient();
 async function main() {
-  const alice = await prisma.topic.create({
-    data: {
-      name: "ejemplo",
-      videos: {
-        create: {
-          description: "Check out Prisma with Next.js",
-          time: "https://www.prisma.io/nextjs",
-          url: "true",
+  console.log(videos.length);
+
+  for (let index = 0; index < videos.length; index++) {
+    await prisma.topic.create({
+      data: {
+        name: videos[index].name,
+        videos: {
+          create: {
+            description: videos[index].video.description,
+            time: videos[index].video.time,
+            url: videos[index].video.url,
+          },
         },
       },
-    },
-  });
+    });
+  }
 }
 main()
   .then(async () => {
