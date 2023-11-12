@@ -1,36 +1,60 @@
 const fs = require("fs");
 const readXlsxFile = require("read-excel-file/node");
+const { v4: uuidv4 } = require("uuid");
 
 function generateJSON(route) {
   readXlsxFile(route).then((documentFile) => {
-    const groupedData = {};
+    const groupedData = [];
 
-    documentFile.forEach((row) => {
+    // Comenzar desde la segunda fila (índice 1)
+    for (let i = 1; i < documentFile.length; i++) {
+      const parentId = uuidv4(); // Generar UUID para el objeto padre
+
       const supply = {
-        department: row[4],
-        municipality: row[5],
-        unity_measure: row[3],
-        average_price: row[6],
+        id: uuidv4(), // Generar UUID para el objeto supply
+        department: documentFile[i][4],
+        municipality: documentFile[i][5],
+        unity_measure: documentFile[i][3],
+        average_price: documentFile[i][6],
       };
 
-      const category = String(row[0]);
-      const supplyType = String(row[1]);
-      const product = String(row[2]);
+      const category = String(documentFile[i][0]);
+      const supplyType = String(documentFile[i][1]);
+      const product = String(documentFile[i][2]);
 
-      if (!groupedData[category]) {
-        groupedData[category] = {};
+      let categoryObj = groupedData.find((item) => item.category === category);
+
+      if (!categoryObj) {
+        // Si la categoría no existe, agregarla con un nuevo objeto padre
+        categoryObj = {
+          id: parentId,
+          category: category,
+          supplyTypes: [],
+        };
+        groupedData.push(categoryObj);
       }
 
-      if (!groupedData[category][supplyType]) {
-        groupedData[category][supplyType] = {};
+      let supplyTypeObj = categoryObj.supplyTypes.find(
+        (type) => type.supplyType === supplyType
+      );
+
+      if (!supplyTypeObj) {
+        // Si el tipo de suministro no existe, agregarlo con un nuevo objeto supplyType
+        supplyTypeObj = {
+          id: uuidv4(),
+          supplyType: supplyType,
+          products: [],
+        };
+        categoryObj.supplyTypes.push(supplyTypeObj);
       }
 
-      if (!groupedData[category][supplyType][product]) {
-        groupedData[category][supplyType][product] = [];
-      }
-
-      groupedData[category][supplyType][product].push(supply);
-    });
+      // Agregar el producto y el suministro
+      supplyTypeObj.products.push({
+        id: uuidv4(),
+        product: product,
+        supplies: [supply],
+      });
+    }
 
     const jsonData = JSON.stringify(groupedData, null, 4);
 
