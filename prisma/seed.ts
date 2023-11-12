@@ -2,8 +2,8 @@ import prisma from "../db/client";
 import VideosSeed from "./seed/VideosSeed";
 
 Promise.all([VideosSeed()])
-  .then(async (data) => {
-    console.log(data);
+  .then(async () => {
+    console.log("Successfully");
     await prisma.$disconnect();
   })
   .catch(async (err) => {
