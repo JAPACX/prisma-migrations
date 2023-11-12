@@ -1,37 +1,34 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas  = ["public", "example"]
-
+  schemas  = ["example", "public"]
+  extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-
-  @@schema("public")
-
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model topic {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String   @db.VarChar(250)
+  updated_at DateTime @default(now())
+  created_at DateTime @default(now())
+  videos     videos[]
 
   @@schema("public")
 }
 
+model videos {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  topic_id_fk String   @db.Uuid
+  description String   @db.VarChar(250)
+  time        String   @db.VarChar(250)
+  url         String   @db.VarChar(250)
+  updated_at  DateTime @default(now())
+  created_at  DateTime @default(now())
+  topic       topic    @relation(fields: [topic_id_fk], references: [id])
 
+  @@schema("public")
+}

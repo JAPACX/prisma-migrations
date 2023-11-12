@@ -19,3 +19,5 @@ npx ts-node <ruta/seed.ts> --> para ejecutar semilla directamente
 pnpm prisma db seed --> ejecuta las semilla y en el package json configuras la ruta y el comando
 
 npx prisma studio
+
+pnpm prisma db pull --> para traer la info de la db
