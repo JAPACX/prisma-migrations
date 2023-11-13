@@ -10,7 +10,8 @@
     "migrate": "prisma migrate dev",
     "pull": "prisma db pull",
     "reset": "pnpm prisma migrate reset",
-    "studio": "npx prisma studio"
+    "studio": "npx prisma studio",
+    "seed": "pnpm prisma db seed"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,6 @@
     "uuid": "^9.0.1"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node --transpile-only prisma/seed.ts"
   }
 }
