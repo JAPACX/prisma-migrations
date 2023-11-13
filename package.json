@@ -8,7 +8,9 @@
     "merge": "prisma db push --preview-feature",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
-    "pull": "prisma db pull"
+    "pull": "prisma db pull",
+    "reset": "pnpm prisma migrate reset",
+    "studio": "npx prisma studio"
   },
   "keywords": [],
   "author": "",
