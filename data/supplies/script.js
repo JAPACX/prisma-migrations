@@ -48,12 +48,22 @@ function generateJSON(route) {
         categoryObj.supplyTypes.push(supplyTypeObj);
       }
 
-      // Agregar el producto y el suministro
-      supplyTypeObj.products.push({
-        id: uuidv4(),
-        product: product,
-        supplies: [supply],
-      });
+      let productObj = supplyTypeObj.products.find(
+        (p) => p.product === product
+      );
+
+      if (!productObj) {
+        // Si el producto no existe, agregarlo con un nuevo objeto product
+        productObj = {
+          id: uuidv4(),
+          product: product,
+          supplies: [],
+        };
+        supplyTypeObj.products.push(productObj);
+      }
+
+      // Agregar la información de suministro al producto
+      productObj.supplies.push(supply);
     }
 
     const jsonData = JSON.stringify(groupedData, null, 4);
