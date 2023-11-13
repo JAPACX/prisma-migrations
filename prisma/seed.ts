@@ -1,7 +1,7 @@
 import prisma from "../db/client";
-import VideosSeed from "./seed/VideosSeed";
+import TechnicalAdvice from "./seeds/TechnicalAdvice";
 
-Promise.all([VideosSeed()])
+Promise.all([TechnicalAdvice()])
   .then(async () => {
     console.log("Successfully");
     await prisma.$disconnect();
