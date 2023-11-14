@@ -8,7 +8,7 @@ export default async function VideosSeed() {
     const videoData = videos[index];
 
     // Actualizar el elemento padre (topic) si es necesario
-    await prisma.topic.upsert({
+    await prisma.technical_advice_topic_video.upsert({
       where: { id: videoData.id },
       update: {
         name: videoData.name,
@@ -21,7 +21,7 @@ export default async function VideosSeed() {
 
     // Actualizar los elementos hijos (videos) siempre
     for (const element of videoData.videos) {
-      await prisma.videos.upsert({
+      await prisma.technical_advice_video.upsert({
         where: { id: element.id },
         update: {
           description: element.description,
