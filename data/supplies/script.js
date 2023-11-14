@@ -15,7 +15,7 @@ function generateJSON(route) {
         department: documentFile[i][4],
         municipality: documentFile[i][5],
         unity_measure: documentFile[i][3],
-        average_price: documentFile[i][6],
+        average_price: documentFile[i][6] + "",
       };
 
       const category = String(documentFile[i][0]);
@@ -57,13 +57,13 @@ function generateJSON(route) {
         productObj = {
           id: uuidv4(),
           product: product,
-          supplies: [],
+          locations: [],
         };
         supplyTypeObj.products.push(productObj);
       }
 
       // Agregar la información de suministro al producto
-      productObj.supplies.push(supply);
+      productObj.locations.push(supply);
     }
 
     const jsonData = JSON.stringify(groupedData, null, 4);
