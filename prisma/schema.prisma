@@ -58,11 +58,11 @@ model type_of_supply {
 model product {
   id                   String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   type_of_supply_id_fk String                @db.Uuid
-  department           String?               @db.VarChar(255)
-  municipality         String?               @db.VarChar(255)
-  name                 String?               @db.VarChar(255)
-  unity_of_measure     String?               @db.VarChar(255)
-  last_price           String?               @db.VarChar(255)
+  department           String?                @db.VarChar(255)
+  municipality         String?                @db.VarChar(255)
+  name                 String?                @db.VarChar(255)
+  unity_of_measure     String?                @db.VarChar(255)
+  last_price           String?                @db.VarChar(255)
   updated_at           DateTime              @default(now())
   created_at           DateTime              @default(now())
   type_of_supply       type_of_supply        @relation(fields: [type_of_supply_id_fk], references: [id], onDelete: NoAction, onUpdate: NoAction)
